@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['0.0.0.0']
 # Application definition
 
 MY_APPS = [
-
+    'item',
 ]
 
 THIRD_PARTY_APPS = [
