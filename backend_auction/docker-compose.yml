@@ -1,0 +1,10 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13
+    ports:
+      - "$AUCTION_DB_PORT:5432"
+    environment:
+      POSTGRES_USER: $AUCTION_DB_USER
+      POSTGRES_PASSWORD: $AUCTION_DB_PASSWORD
+      POSTGRES_DB: $AUCTION_DB_NAME
