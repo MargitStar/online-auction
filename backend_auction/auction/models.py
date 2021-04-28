@@ -7,6 +7,11 @@ from item.models import Item
 
 
 class Auction(models.Model):
+    class Status(models.IntegerChoices):
+        PENDING = 1
+        IN_PROGRESS = 2
+        CLOSED = 3
+
     current_price = models.DecimalField(
         'current price, $',
         max_digits=10,
@@ -27,15 +32,10 @@ class Auction(models.Model):
         'closing date',
     )
 
-    STATUS = (('PENDING', 'PENDING'), ('IN_PROGRESS', 'IN_PROGRESS'), ('CLOSED', 'CLOSED'))
-
-    status = models.CharField(
-        'status',
-        max_length=15,
-        choices=STATUS,
-    )
+    status = models.IntegerField(choices=Status.choices)
 
     object_id = models.IntegerField()
+
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.PROTECT,
@@ -83,6 +83,6 @@ class Lot(models.Model):
 
     auction = models.OneToOneField(
         Auction,
-        on_delete= models.CASCADE,
+        on_delete=models.CASCADE,
 
     )
