@@ -15,4 +15,4 @@ class Item(models.Model):
     )
 
     def __str__(self):
-        return self.title.title()
+        return self.title.capitalize()
