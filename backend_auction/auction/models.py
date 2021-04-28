@@ -46,13 +46,13 @@ class Auction(models.Model):
 
 class English(models.Model):
     buy_it_now = models.DecimalField(
-        'opening price, $',
+        'buy it now price, $',
         max_digits=10,
         decimal_places=2,
     )
 
     reverse_price = models.DecimalField(
-        'opening price, $',
+        'reverse price, $',
         max_digits=10,
         decimal_places=2,
     )
