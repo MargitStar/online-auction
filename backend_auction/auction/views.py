@@ -7,4 +7,3 @@ from auction.models import Lot
 class LotViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Lot.objects.all()
     serializer_class = LotSerializer
-
