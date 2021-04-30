@@ -1,6 +1,15 @@
 from django.contrib import admin
 
-from .models import Auction, Dutch, English, Lot
+from auction.models import Auction, Dutch, English, Lot
+
+
+class LotInLine(admin.StackedInline):
+    model = Lot
+
+
+class AuctionAdmin(admin.ModelAdmin):
+    inlines = (LotInLine,)
+
 
 
 class LotInLine(admin.StackedInline):
