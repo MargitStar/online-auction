@@ -36,6 +36,7 @@ MY_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'django_filters',
+    'rest_framework.authtoken',
 ]
 
 INSTALLED_APPS = [
@@ -136,8 +137,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 1
-}
+    'PAGE_SIZE': 1,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )}

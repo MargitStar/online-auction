@@ -1,11 +1,14 @@
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
 
 from auction.serializers import LotSerializer
 from auction.models import Lot
 
 
 class LotViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
     queryset = Lot.objects.all()
     serializer_class = LotSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
