@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from auction.models import Auction, Dutch, English, Lot
+from auction.models import Auction, Dutch, English, Lot, Offer
 
 
 class LotInLine(admin.StackedInline):
@@ -15,3 +15,4 @@ admin.site.register(Lot)
 admin.site.register(Auction, AuctionAdmin)
 admin.site.register(Dutch)
 admin.site.register(English)
+admin.site.register(Offer)

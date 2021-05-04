@@ -1,10 +1,14 @@
 from django.contrib.contenttypes.fields import (GenericForeignKey,
                                                 GenericRelation)
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import get_user_model
 from django.db import models
+
 
 from item.models import Item
 
+
+User = get_user_model()
 
 class Auction(models.Model):
     class Status(models.IntegerChoices):
@@ -85,4 +89,28 @@ class Lot(models.Model):
         Auction,
         on_delete=models.CASCADE,
 
+    )
+
+
+class Offer(models.Model):
+    lot = models.ForeignKey(
+        Lot,
+        on_delete=models.CASCADE,
+        related_name='lot',
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='user',
+    )
+
+    price = models.DecimalField(
+        'price, $',
+        max_digits=10,
+        decimal_places=2,
+    )
+
+    timestamp = models.DateField(
+        'timestamp',
     )
