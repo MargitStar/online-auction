@@ -144,3 +144,6 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     )}
+
+CELERY_BROKER_URL = os.environ['AUCTION_CELERY_BROKER_URL']
+CELERY_RESULT_BACKEND = os.environ['AUCTION_CELERY_RESULT_BACKEND']

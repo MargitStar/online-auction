@@ -8,3 +8,5 @@ services:
       POSTGRES_USER: $AUCTION_DB_USER
       POSTGRES_PASSWORD: $AUCTION_DB_PASSWORD
       POSTGRES_DB: $AUCTION_DB_NAME
+  redis:
+    image: redis:alpine
