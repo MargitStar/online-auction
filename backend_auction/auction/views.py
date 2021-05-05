@@ -1,9 +1,9 @@
-from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from auction.serializers import LotSerializer
 from auction.models import Lot
+from auction.serializers import LotSerializer
 
 
 class LotViewSet(viewsets.ReadOnlyModelViewSet):

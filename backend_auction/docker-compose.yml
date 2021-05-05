@@ -9,4 +9,6 @@ services:
       POSTGRES_PASSWORD: $AUCTION_DB_PASSWORD
       POSTGRES_DB: $AUCTION_DB_NAME
   redis:
-    image: redis:alpine
+    image: redis:6.2
+    ports:
+      - "$AUCTION_BROKER_PORT:6379"
