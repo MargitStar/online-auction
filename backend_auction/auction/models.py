@@ -112,4 +112,5 @@ class Offer(models.Model):
 
     timestamp = models.DateField(
         'timestamp',
+        auto_now=True
     )

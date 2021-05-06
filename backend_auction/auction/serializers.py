@@ -41,3 +41,10 @@ class LotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lot
         fields = ('item', 'auction')
+
+
+class OfferSerializer(serializers.Serializer):
+    price = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+    )
