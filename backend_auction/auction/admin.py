@@ -13,8 +13,8 @@ class AuctionAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        start_auction.apply_async((obj.pk,), eta=obj.opening_date)
-        close_auction.apply_async((obj.pk,), eta=obj.closing_date)
+        start_auction.apply_async((obj.pk,), eta=obj.opening_date, task_id=obj.opening_task_id)
+        close_auction.apply_async((obj.pk,), eta=obj.closing_date, task_id=obj.closing_task_id)
 
 
 admin.site.register(Lot)

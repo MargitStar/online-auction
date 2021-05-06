@@ -46,6 +46,14 @@ class Auction(models.Model):
 
     auction_type = GenericForeignKey('content_type', 'object_id')
 
+    @property
+    def opening_task_id(self):
+        return f'{self.pk}-open'
+
+    @property
+    def closing_task_id(self):
+        return f'{self.pk}-close'
+
 
 class English(models.Model):
     buy_it_now = models.DecimalField(
