@@ -27,11 +27,11 @@ class Auction(models.Model):
         decimal_places=2,
     )
 
-    opening_date = models.DateField(
+    opening_date = models.DateTimeField(
         'opening date',
     )
 
-    closing_date = models.DateField(
+    closing_date = models.DateTimeField(
         'closing date',
     )
 
@@ -78,8 +78,7 @@ class Dutch(models.Model):
         decimal_places=2,
     )
 
-    frequency = models.DateTimeField(
-        'frequency',
+    frequency = models.DurationField(
     )
 
     auction = GenericRelation(Auction)

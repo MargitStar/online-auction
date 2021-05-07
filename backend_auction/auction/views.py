@@ -31,6 +31,14 @@ def create_offer_buy_it_now(user, lot):
     lot.auction.save()
 
 
+@transaction.atomic
+def buy_it_now_dutch(user, lot):
+    Offer.objects.create(user=user, lot=lot, price=lot.auction.current_price)
+    lot.auction.status = Auction.Status.CLOSED
+    app.control.revoke(lot.auction.closing_task_id)
+    lot.auction.save()
+
+
 class LotViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated,)
 
@@ -64,3 +72,13 @@ class LotViewSet(viewsets.ReadOnlyModelViewSet):
         if validate_auction_status(lot) and validate_auction_buy_it_now_price(lot):
             create_offer_buy_it_now(user, lot)
             return Response('You have just bought this auction!', status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def buy_it_now_dutch(self, request, pk=None):
+        user = request.user
+        lot = Lot.objects.get(pk=pk)
+        if lot.auction.content_type.model == 'english':
+            return Response("You can't buy english auction now!")
+        if validate_auction_status(lot):
+            buy_it_now_dutch(user, lot)
+            return Response('You have just bought thia auction')
