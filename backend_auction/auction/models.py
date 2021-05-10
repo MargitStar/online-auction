@@ -48,11 +48,15 @@ class Auction(models.Model):
 
     @property
     def opening_task_id(self):
-        return f'{self.pk}-open'
+        return f'lot-#{self.pk}-open-date'
 
     @property
     def closing_task_id(self):
-        return f'{self.pk}-close'
+        return f'lot-#{self.pk}-close-date'
+
+    @property
+    def updating_price_task_id(self):
+        return f'lot-#{self.pk}-update-price'
 
 
 class English(models.Model):
@@ -80,6 +84,12 @@ class Dutch(models.Model):
 
     frequency = models.DurationField(
     )
+
+    @staticmethod
+    def delta_price(auction):
+        change_times = (auction.closing_date - auction.opening_date) // auction.auction_type.frequency
+        delta_price = (auction.opening_price - auction.auction_type.end_price) / change_times
+        return delta_price
 
     auction = GenericRelation(Auction)
 

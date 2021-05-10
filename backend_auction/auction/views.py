@@ -35,6 +35,7 @@ def create_offer_buy_it_now(user, lot):
 def buy_it_now_dutch(user, lot):
     Offer.objects.create(user=user, lot=lot, price=lot.auction.current_price)
     lot.auction.status = Auction.Status.CLOSED
+    app.control.revoke(lot.auction.updating_price_task_id)
     app.control.revoke(lot.auction.closing_task_id)
     lot.auction.save()
 
