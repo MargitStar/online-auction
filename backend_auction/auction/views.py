@@ -12,6 +12,7 @@ from auction.serializers import LotSerializer, OfferSerializer
 from auction.validation import (validate_auction_buy_it_now_price,
                                 validate_auction_price,
                                 validate_auction_status)
+from auction.tasks import send_email_buying_auction, send_email_offer_rejection
 from backend_auction.celery import app
 
 
@@ -29,6 +30,7 @@ def create_offer_buy_it_now(user, lot):
     lot.auction.status = Auction.Status.CLOSED
     app.control.revoke(lot.auction.closing_task_id)
     lot.auction.save()
+    send_email_buying_auction.delay(user.pk)
 
 
 @transaction.atomic
@@ -38,6 +40,7 @@ def buy_it_now_dutch(user, lot):
     app.control.revoke(lot.auction.updating_price_task_id)
     app.control.revoke(lot.auction.closing_task_id)
     lot.auction.save()
+    send_email_buying_auction.delay(user.pk)
 
 
 class LotViewSet(viewsets.ReadOnlyModelViewSet):
@@ -58,7 +61,12 @@ class LotViewSet(viewsets.ReadOnlyModelViewSet):
             return Response("You can't make offer on dutch auction!")
         if serializer.is_valid():
             if validate_auction_price(lot, serializer) and validate_auction_status(lot):
+                last_offer = Offer.objects.filter(lot=lot).order_by('-timestamp').first()
                 create_offer(user, lot, serializer)
+                if last_offer is not None:
+                    previous_user = last_offer.user
+                    if previous_user != user:
+                        send_email_offer_rejection.delay(previous_user.pk)
                 return Response('You have just made an offer', status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors,

@@ -1,3 +1,5 @@
+import decimal
+
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import (GenericForeignKey,
                                                 GenericRelation)
@@ -89,7 +91,7 @@ class Dutch(models.Model):
     def delta_price(auction):
         change_times = (auction.closing_date - auction.opening_date) // auction.auction_type.frequency
         delta_price = (auction.opening_price - auction.auction_type.end_price) / change_times
-        return delta_price
+        return decimal.Decimal(delta_price)
 
     auction = GenericRelation(Auction)
 
