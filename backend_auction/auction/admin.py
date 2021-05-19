@@ -12,6 +12,7 @@ class LotInLine(admin.StackedInline):
 
 class AuctionAdmin(admin.ModelAdmin):
     inlines = (LotInLine,)
+    list_display = ['id', 'current_price', 'opening_price', 'opening_date', 'closing_date', 'status']
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)

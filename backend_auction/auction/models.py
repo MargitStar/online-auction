@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from item.models import Item
+from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -59,6 +60,18 @@ class Auction(models.Model):
     @property
     def updating_price_task_id(self):
         return f'lot-#{self.pk}-update-price'
+
+    def clean(self):
+        super(Auction, self).clean()
+        if self.opening_date > self.closing_date:
+            raise ValidationError("Opening_date should be less than closing date")
+        if self.status != self.Status.PENDING:
+            raise ValidationError("Status should be Pending")
+        if self.current_price != 0:
+            raise ValidationError("Current should must be null!")
+        if self.content_type.model == 'dutch':
+            if self.opening_price < self.auction_type.end_price:
+                raise ValidationError("End price should be less than current!")
 
 
 class English(models.Model):

@@ -11,6 +11,7 @@ User = get_user_model()
 def start_auction(auction_id):
     auction = Auction.objects.get(pk=auction_id)
     auction.status = Auction.Status.IN_PROGRESS
+    auction.current_price = auction.opening_price
     auction.save()
 
 
