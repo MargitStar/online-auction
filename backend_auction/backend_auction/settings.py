@@ -37,6 +37,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework.authtoken',
+    'channels',
 ]
 
 INSTALLED_APPS = [
@@ -76,7 +77,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend_auction.wsgi.application'
+# WSGI_APPLICATION = 'backend_auction.wsgi.application'
+ASGI_APPLICATION = 'backend_auction.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(os.environ['AUCTION_REDIS_HOST'], os.environ['AUCTION_REDIS_PORT'])],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -155,4 +165,3 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = os.environ['EMAIL_PORT']
 EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
-

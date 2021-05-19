@@ -7,4 +7,3 @@ router.register(r'lot', LotViewSet)
 router.register(r'offer', OfferViewSet)
 
 urlpatterns = router.urls
-
