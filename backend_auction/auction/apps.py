@@ -6,7 +6,8 @@ class AuctionConfig(AppConfig):
     name = 'auction'
 
     def ready(self):
-        from .signals import update_lot
+        from auction.signals import update_lot, real_time_offer
         from django.db.models.signals import post_save
-        from auction.models import Auction
+        from auction.models import Auction, Offer
         post_save.connect(update_lot, sender=Auction)
+        post_save.connect(real_time_offer, sender=Offer)
