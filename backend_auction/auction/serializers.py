@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from auction.models import Auction, Dutch, English, Lot
+from auction.models import Auction, Dutch, English, Lot, Offer
 from item.serializers import ItemSerializer
 
 
@@ -35,8 +35,8 @@ class DutchSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LotSerializer(serializers.ModelSerializer):
-    item = ItemSerializer(required=True)
-    auction = AuctionSerializer(required=True)
+    item = ItemSerializer()
+    auction = AuctionSerializer()
 
     class Meta:
         model = Lot
@@ -48,3 +48,11 @@ class OfferSerializer(serializers.Serializer):
         max_digits=10,
         decimal_places=2,
     )
+
+
+class OfferViewSerializer(serializers.ModelSerializer):
+    lot = LotSerializer()
+
+    class Meta:
+        model = Offer
+        fields = ('lot', 'user', 'price')

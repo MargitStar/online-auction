@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from auction.models import Auction, Lot, Offer
-from auction.serializers import LotSerializer, OfferSerializer
+from auction.serializers import LotSerializer, OfferSerializer, OfferViewSerializer
 from auction.validation import (validate_auction_buy_it_now_price,
                                 validate_auction_price,
                                 validate_auction_status)
@@ -91,3 +91,12 @@ class LotViewSet(viewsets.ReadOnlyModelViewSet):
         if validate_auction_status(lot):
             buy_it_now_dutch(user, lot)
             return Response('You have just bought thia auction')
+
+
+class OfferViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
+    queryset = Offer.objects.all()
+    serializer_class = OfferViewSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ('lot',)
