@@ -40,7 +40,7 @@ class LotSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lot
-        fields = ('item', 'auction')
+        fields = ('pk', 'item', 'auction')
 
 
 class OfferSerializer(serializers.Serializer):
