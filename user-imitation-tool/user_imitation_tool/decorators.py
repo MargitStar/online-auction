@@ -12,7 +12,7 @@ def handle_refresh(method):
             return await method(self, *args, **kwargs)
         except aiohttp.ClientResponseError as error:
             if error.status != 401:
-                return
+                raise
             logging.debug('Access token expired. Getting new access token')
             await self.refresh()
             return await retry_call(method, fargs=(self, *args), fkwargs=kwargs, tries=5, backoff=2, jitter=(0, 1))
