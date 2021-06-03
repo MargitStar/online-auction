@@ -8,6 +8,7 @@ authors = ["MargitStar <sovenokbymargo@mail.ru>"]
 python = "^3.9"
 aiohttp = "^3.7.4"
 retry = "^0.9.2"
+pydantic = "^1.8.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
