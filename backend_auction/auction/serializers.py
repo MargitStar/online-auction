@@ -1,7 +1,6 @@
-from rest_framework import serializers
-
 from auction.models import Auction, Dutch, English, Lot, Offer
 from item.serializers import ItemSerializer
+from rest_framework import serializers
 
 
 class AuctionObjectRelatedField(serializers.RelatedField):
@@ -23,15 +22,19 @@ class AuctionSerializer(serializers.ModelSerializer):
 
 
 class EnglishSerializer(serializers.HyperlinkedModelSerializer):
+    lot_type = serializers.ReadOnlyField(default='english')
+
     class Meta:
         model = English
-        fields = ('buy_it_now', 'reverse_price')
+        fields = ('lot_type', 'buy_it_now', 'reverse_price')
 
 
 class DutchSerializer(serializers.HyperlinkedModelSerializer):
+    lot_type = serializers.ReadOnlyField(default='dutch')
+
     class Meta:
         model = Dutch
-        fields = ('end_price', 'frequency')
+        fields = ('lot_type', 'end_price', 'frequency')
 
 
 class LotSerializer(serializers.ModelSerializer):

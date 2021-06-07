@@ -19,8 +19,9 @@ def get_users(path):
             csv_reader = csv.DictReader(csv_file, fieldnames=['username', 'password'], delimiter=',')
             return [User(**row) for row in csv_reader]
     except FileNotFoundError:
-        logging.warning(f'File {path} does not exist')
-        sys.exit(1)
+        error_message = f'File {path} does not exist'
+        logging.warning(error_message)
+        sys.exit(error_message)
 
 
 class ApiClient:
@@ -53,16 +54,28 @@ class ApiClient:
             await self.authenticate_user()
 
     @handle_refresh
-    async def get_english_lots(self, offset):
+    async def get_opened_lots(self, offset):
         async with self.session.get(
                 f"{self.url}/lot/",
                 headers=self.auth_headers,
-                params={'auction__content_type__model': 'english', 'auction__status': '2', 'offset': offset},
+                params={'auction__status': '2', 'offset': offset},
                 raise_for_status=True) as response:
             return await response.json()
 
     @handle_refresh
     async def make_offer_on_english_lot(self, pk, offered_price):
         async with self.session.post(f"{self.url}/lot/{pk}/make_offer/", json={'price': str(offered_price)},
+                                     headers=self.auth_headers) as response:
+            return await response.json()
+
+    @handle_refresh
+    async def buy_it_now_english(self, pk):
+        async with self.session.post(f"{self.url}/lot/{pk}/buy_it_now/",
+                                     headers=self.auth_headers) as response:
+            return await response.json()
+
+    @handle_refresh
+    async def buy_it_now_dutch(self, pk):
+        async with self.session.post(f"{self.url}/lot/{pk}/buy_it_now_dutch/",
                                      headers=self.auth_headers) as response:
             return await response.json()

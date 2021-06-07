@@ -90,7 +90,7 @@ class LotViewSet(viewsets.ReadOnlyModelViewSet):
             return Response("You can't buy english auction now!")
         if validate_auction_status(lot):
             buy_it_now_dutch(user, lot)
-            return Response('You have just bought thia auction')
+            return Response('You have just bought this auction', status=status.HTTP_201_CREATED)
 
 
 class OfferViewSet(viewsets.ReadOnlyModelViewSet):
