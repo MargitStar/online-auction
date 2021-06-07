@@ -132,3 +132,4 @@ dmypy.json
 media
 
 user-imitation-tool/users.csv
+user-imitation-tool/config.json

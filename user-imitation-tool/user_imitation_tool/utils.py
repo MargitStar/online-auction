@@ -1,5 +1,6 @@
 import csv
 import logging
+import sys
 from typing import NamedTuple
 
 import aiohttp
@@ -13,9 +14,13 @@ class User(NamedTuple):
 
 
 def get_users(path):
-    with open(path) as csv_file:
-        csv_reader = csv.DictReader(csv_file, fieldnames=['username', 'password'], delimiter=',')
-        return [User(**row) for row in csv_reader]
+    try:
+        with open(path) as csv_file:
+            csv_reader = csv.DictReader(csv_file, fieldnames=['username', 'password'], delimiter=',')
+            return [User(**row) for row in csv_reader]
+    except FileNotFoundError:
+        logging.warning(f'File {path} does not exist')
+        sys.exit(1)
 
 
 class ApiClient:
