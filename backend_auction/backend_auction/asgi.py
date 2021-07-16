@@ -10,14 +10,16 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
 import os
 from django.core.asgi import get_asgi_application
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend_auction.settings')
+
+asgi_application = get_asgi_application()
+
 from channels.routing import ProtocolTypeRouter, URLRouter
 from auction.routers import websocket_urlpatterns
 from auction.ws_auth import TokenAuthMiddlewareStack
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend_auction.settings')
-
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
+    "http": asgi_application,
     "websocket": TokenAuthMiddlewareStack(
         URLRouter(
             websocket_urlpatterns,

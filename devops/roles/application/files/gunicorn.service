@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ec2-user/margarita-b-online-auction-be/backend_auction
+EnvironmentFile=/home/ec2-user/margarita-b-online-auction-be/backend_auction/.env
+ExecStart=/home/ec2-user/.cache/pypoetry/virtualenvs/backend-auction-1i1LviqB-py3.9/bin/gunicorn \
+          --log-level=info \
+          --bind unix:/run/gunicorn.sock \
+          backend_auction.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

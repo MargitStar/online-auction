@@ -1,0 +1,25 @@
+---
+- name: nginx configuration
+  template:
+    src: backend_auction
+    dest: /etc/nginx/sites-enabled/
+
+
+- name: create an error log file
+  file:
+    path: /var/log/nginx/error.log
+    state: touch
+
+- name: create an access log file
+  file:
+    path: /var/log/nginx/access.log
+    state: touch
+
+- name: nginx conf file
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/
+
+
+- name: install nginx
+  shell: sudo amazon-linux-extras install nginx1 -y

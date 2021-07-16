@@ -1,0 +1,5 @@
+username: "ec2-user"
+user_homedir: "/home/{{ username }}"
+project_dir: "{{ user_homedir }}/margarita-b-online-auction-be"
+project_homedir: "{{project_dir}}/backend_auction"
+archive_path: "/Users/margitstar/Desktop/backend_auction.zip"

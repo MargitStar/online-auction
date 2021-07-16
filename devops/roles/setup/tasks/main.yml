@@ -1,0 +1,24 @@
+- name: collect static
+  shell: cd {{project_homedir}} && export $(grep -v '^#' .env | xargs) && sudo chown -R $USER /home/ && poetry run python manage.py collectstatic
+  become_user: "{{ansible_user}}"
+
+- name: move static folder
+  shell: sudo mkdir /opt/backend_auction/ && sudo mv {{project_homedir}}/static/ /opt/backend_auction/static/
+
+- name: restart gunicorn
+  service:
+    name: gunicorn
+    state: restarted
+    enabled: yes
+
+- name: restart daphne
+  service:
+    name: daphne
+    state: restarted
+    enabled: yes
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

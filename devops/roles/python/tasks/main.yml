@@ -1,0 +1,47 @@
+---
+- name: check python3 version
+  shell: /usr/bin/python3 --version
+  register: python3_version
+  ignore_errors: yes
+  tags:
+    - python-yum
+
+
+- name: install packages
+  yum: pkg={{ item.name }} state=latest
+  with_items:
+    - name: gcc
+    - name: openssl-devel
+    - name: bzip2-devel
+    - name: libffi-devel
+    - name: python-devel
+    - name: postgresql-devel
+  when: python3_version['stdout'] != 'Python 3.9.6'
+
+- name: download and unpack python 3.9.6 if needed
+  unarchive:
+    src: https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tgz
+    dest: /opt
+    remote_src: yes
+    keep_newer: yes
+  when: python3_version['stdout'] != 'Python 3.9.6'
+  tags:
+    - python-yum
+
+- name: ./configure
+  shell: cd "/opt/Python-3.9.6" && ./configure --prefix=/usr/local/python3.9.6
+  when: python3_version['stdout'] != 'Python 3.9.6'
+
+- name: install python 3.9.6
+  make:
+    chdir: /opt/Python-3.9.6
+    target: install
+  when: python3_version['stdout'] != 'Python 3.9.6'
+
+- name: make python 3.9.6 main
+  shell: sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/python3.9.6/bin/python3 1
+  when: python3_version['stdout'] != 'Python 3.9.6'
+
+- name: install all project dependencies
+  shell: cd {{project_homedir}} && poetry install
+  become_user: "{{ansible_user}}"

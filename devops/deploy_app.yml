@@ -1,0 +1,27 @@
+---
+- hosts: appservers
+  roles:
+    - role: application
+      vars:
+        auction_db_name: "{{ lookup('env', 'AUCTION_DB_NAME') }}"
+        auction_db_user: "{{ lookup('env', 'AUCTION_DB_USER') }}"
+        auction_db_password: "{{ lookup('env', 'AUCTION_DB_PASSWORD') }}"
+        auction_db_host: "{{ lookup('env', 'AUCTION_DB_HOST') }}"
+        auction_db_port: "{{ lookup('env', 'AUCTION_DB_PORT') }}"
+        auction_broker_port: "{{ lookup('env', 'AUCTION_BROKER_PORT') }}"
+        auction_celery_broker_url: "{{ lookup('env', 'AUCTION_CELERY_BROKER_URL') }}"
+        auction_celery_result_backend: "{{ lookup('env', 'AUCTION_CELERY_RESULT_BACKEND') }}"
+        email_host: "{{ lookup('env', 'EMAIL_HOST') }}"
+        email_host_user: "{{ lookup('env', 'EMAIL_HOST_USER') }}"
+        email_host_password: "{{ lookup('env', 'EMAIL_HOST_PASSWORD') }}"
+        email_port: "{{ lookup('env', 'EMAIL_PORT') }}"
+        email_use_tls: "{{ lookup('env', 'EMAIL_USE_TLS') }}"
+        auction_redis_port: "{{ lookup('env', 'AUCTION_REDIS_PORT') }}"
+        auction_redis_host: "{{ lookup('env', 'AUCTION_REDIS_HOST') }}"
+        log_level: "{{ lookup('env', 'LOG_LEVEL') }}"
+        allowed_hosts: "{{ lookup('env', 'ALLOWED_HOSTS') }}"
+        secret_key: "{{ lookup('env', 'SECRET_KEY') }}"
+        root_log_level: "{{ lookup('env', 'ROOT_LOG_LEVEL') }}"
+    - python
+    - nginx
+    - setup

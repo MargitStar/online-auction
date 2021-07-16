@@ -1,0 +1,50 @@
+---
+- name: create project directory
+  file:
+    path: "{{project_dir}}"
+    state: directory
+
+- name: unarchive project archive
+  unarchive:
+    src: "{{archive_path}}"
+    dest: "{{project_dir}}"
+
+- name: install pip3
+  yum:
+    name: python3-pip
+    state: latest
+
+- name: install poetry
+  shell: pip3 install poetry
+
+- name: load env defaults
+  template:
+    src: .env.j2
+    dest: "{{project_homedir}}/.env"
+
+- name: install daphne
+  pip:
+    name: daphne
+    state: latest
+    executable: pip3
+
+- name: install gunicorn
+  pip:
+    name: gunicorn
+    state: latest
+    executable: pip3
+
+- name: daphne
+  copy:
+    src: daphne.service
+    dest: /etc/systemd/system/
+
+- name: gunicorn.service
+  copy:
+    src: gunicorn.service
+    dest: /etc/systemd/system/
+
+- name: gunicorn.socket
+  copy:
+    src: gunicorn.socket
+    dest: /etc/systemd/system/
